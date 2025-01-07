@@ -1,3 +1,4 @@
+package CupcakeClicker.src;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -15,5 +16,6 @@ public class Upgrade {
    boolean isBought;
    
    public Upgrade(String name, String iconPath, String Description, double cost){
+      
    }
 }
