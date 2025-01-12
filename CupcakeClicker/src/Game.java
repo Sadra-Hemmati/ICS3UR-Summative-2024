@@ -3,20 +3,20 @@ package CupcakeClicker.src;
 import java.sql.Date;
 
 public class Game {
-    private Upgrade[] clickUpgrades;
-    private Upgrade[][] generatorsUpgrades;
-    private Upgrade[] prestigeUpgrades;
-    private Generator[] generators;
+    private Upgrade[] clickUpgrades = {};
+    private Upgrade[][] generatorsUpgrades = {};
+    private Upgrade[] prestigeUpgrades = {};
+    private Generator[] generators = {};
     private double cupcakes;
     private double cupcakesPerSecond;
     private double cupcakesPerClick = 1;
-    private double prestigeMultiplier;
+    private double prestigeMultiplier = 1;
     private double prestigeCupkakes;
     private Date lastTimePlayed;
 
     public Game() {
         loadFromTXT();
-        calculateOfflineincome();
+        //calculateOfflineincome(); requires loadFromTxt() to work
     }
 
     public void saveToTXT() {
@@ -37,7 +37,7 @@ public class Game {
     }
 
 
-    private void calculateIncomePerClick() {
+    public void calculateIncomePerClick() {
         double tempCupcakesPerClick = 1;
         for (Upgrade upgrade : clickUpgrades) {
             if (upgrade.isBought()) {
@@ -50,8 +50,8 @@ public class Game {
 
    
     //delta is the elapsed time in milliseconds since the last frame
-    private void calculateIncomePerFrame(int delta) {
-        double tempCupcakesPerSecond = 0;
+    public void calculateIncomePerFrame(long delta) {
+        double tempCupcakesPerSecond = 1;
         for (int i = 0; i < generators.length; i++) {
             double generatorCupckaesPerSecond = generators[i].getProductionPerSecond();
             for (Upgrade upgrade : generatorsUpgrades[i]) {
@@ -62,17 +62,19 @@ public class Game {
             tempCupcakesPerSecond += generatorCupckaesPerSecond;
         }
         cupcakesPerSecond =  tempCupcakesPerSecond*prestigeMultiplier;
-
         addCupcakes(cupcakesPerSecond * delta / 1000);
-        ;
     }
 
-    private void calculateOfflineincome() {
-        long offlineSeconds = (System.currentTimeMillis() - lastTimePlayed.getTime()) / 1000;
-        addCupcakes(offlineSeconds * cupcakesPerSecond);
+    public void calculateOfflineincome() {
+        long offlineMilliSeconds = (System.currentTimeMillis() - lastTimePlayed.getTime());
+        calculateIncomePerFrame(offlineMilliSeconds);
     }
 
     public void prestige() {
         //TODO
+    }
+
+    public double getCupcakes() {
+        return cupcakes;
     }
 }
