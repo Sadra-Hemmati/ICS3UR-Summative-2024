@@ -9,13 +9,14 @@ public class Generator {
     private IntToDoubleFunction costCalulation;
     private boolean isUnlocked;
     
-    Generator(String name,String iconPath, int level, double unlockThreshold, IntToDoubleFunction costCalulation, double productionPerLevelPerSecond) {
+    Generator(String name, String iconPath, int level, double unlockThreshold, IntToDoubleFunction costCalulation, double productionPerLevelPerSecond) {
         this.name = name;
         this.iconPath = iconPath;
         this.level = level;
         this.unlockThreshold = unlockThreshold;
         this.costCalulation = costCalulation;
         this.productionPerLevelPerSecond = productionPerLevelPerSecond;
+        isUnlocked = false;
     }
 
     public double getProductionPerSecond() {
@@ -35,8 +36,11 @@ public class Generator {
      }
 
      //this should probably be changed, maybe game class variable should be static
-     public boolean isUnlocked(double cupcakes) {
-        return cupcakes >= unlockThreshold;
+     public boolean isUnlocked() {
+        if (!isUnlocked) {
+            isUnlocked = Game.getCupcakes() >= unlockThreshold;
+        }
+        return isUnlocked;
      }
 
      public int getLevel() {
@@ -45,5 +49,14 @@ public class Generator {
 
      public void prestigeReset(){
         //TODO
+    }
+
+    public void levelUp(int levels) {
+        for (int i = 0; i < levels; i++) {
+            if (Game.getCupcakes() >= getCost()) {
+                Game.subtractCupcakes(getCost());
+                level++;
+            }
+        }
     }
 }

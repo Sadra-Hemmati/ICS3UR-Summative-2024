@@ -3,55 +3,57 @@ package CupcakeClicker.src;
 import java.sql.Date;
 
 public class Game {
-    private Upgrade[] clickUpgrades = {};
-    private Upgrade[][] generatorsUpgrades = {};
-    private Upgrade[] prestigeUpgrades = {};
-    private Generator[] generators = {};
-    private double cupcakes;
-    private double cupcakesPerSecond;
-    private double cupcakesPerClick = 1;
-    private double prestigeMultiplier = 1;
-    private double prestigeCupkakes;
-    private Date lastTimePlayed;
+    private static Upgrade[] clickUpgrades = {};
+    private static Upgrade[][] generatorsUpgrades = {{}, {}};
+    private static Upgrade[] prestigeUpgrades = {};
+    private static Generator[] generators = {new Generator("Generator", "CupcakeClicker\\Assets\\Cupcake.png", 0, 0, (e) -> e, 1),
+                                            new Generator("Generator 2", "CupcakeClicker\\Assets\\Cupcake.png", 0, 10, (e) -> e, 1)
+                                                };
+    private static double cupcakes;
+    private static double cupcakesPerSecond = 1;
+    private static double cupcakesPerClick = 1;
+    private static double prestigeCupkakes;
+    private static double prestigeMultiplier = 1;
+    private static Date lastTimePlayed;
 
     public Game() {
         loadFromTXT();
         //calculateOfflineincome(); requires loadFromTxt() to work
     }
 
-    public void saveToTXT() {
+    public static void saveToTXT() {
         // TODO
     }
 
-    public void loadFromTXT() {
+    public static void loadFromTXT() {
         // TODO
     }
 
-    public void addCupcakes(double newCupcakes) {
+    public static void addCupcakes(double newCupcakes) {
         cupcakes += newCupcakes;
         prestigeCupkakes += newCupcakes;
     }
 
-    public void subtractCupcakes(double cupcakesSpent) {
+    public static void subtractCupcakes(double cupcakesSpent) {
         cupcakes -= cupcakesSpent;
     }
 
 
-    public void calculateIncomePerClick() {
-        double tempCupcakesPerClick = 1;
+    public static void calculateIncomePerClick() {
+        double baseCupcakesPerClick = 0.1;
         for (Upgrade upgrade : clickUpgrades) {
             if (upgrade.isBought()) {
-                tempCupcakesPerClick = upgrade.applyUpgrade(tempCupcakesPerClick);
+                baseCupcakesPerClick = upgrade.applyUpgrade(baseCupcakesPerClick);
             }
         }
-        cupcakesPerClick = tempCupcakesPerClick*prestigeMultiplier;
+        cupcakesPerClick = baseCupcakesPerClick*prestigeMultiplier;
         addCupcakes(cupcakesPerClick);
     }
 
    
     //delta is the elapsed time in milliseconds since the last frame
-    public void calculateIncomePerFrame(long delta) {
-        double tempCupcakesPerSecond = 1;
+    public static void calculateIncomePerFrame(long delta) {
+        double tempCupcakesPerSecond = 0;
         for (int i = 0; i < generators.length; i++) {
             double generatorCupckaesPerSecond = generators[i].getProductionPerSecond();
             for (Upgrade upgrade : generatorsUpgrades[i]) {
@@ -65,7 +67,7 @@ public class Game {
         addCupcakes(cupcakesPerSecond * delta / 1000);
     }
 
-    public void calculateOfflineincome() {
+    public static void calculateOfflineincome() {
         long offlineMilliSeconds = (System.currentTimeMillis() - lastTimePlayed.getTime());
         calculateIncomePerFrame(offlineMilliSeconds);
     }
@@ -74,7 +76,15 @@ public class Game {
         //TODO
     }
 
-    public double getCupcakes() {
+    public static double getCupcakes() {
         return cupcakes;
+    }
+
+    public static double getCupcakesPerSecond() {
+        return cupcakesPerSecond;
+    }
+
+    public static Generator[] getGenerators() {
+        return generators;
     }
 }
