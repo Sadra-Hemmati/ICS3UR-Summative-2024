@@ -9,7 +9,6 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 
 public class MiddlePanel extends JPanel{
-    GeneratorPane genPane;
 
     public MiddlePanel() {
         setLayout(new BorderLayout());
@@ -17,14 +16,6 @@ public class MiddlePanel extends JPanel{
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setBackground(Color.BLACK);
 
-        genPane = new GeneratorPane();
-
-        add(genPane);
-
         setVisible(true);
-    }
-
-    public void update() {
-        genPane.update();
     }
 }

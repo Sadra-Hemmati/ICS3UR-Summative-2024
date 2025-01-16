@@ -4,12 +4,13 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 
-public class LeftPanel extends JPanel implements ActionListener{
+public class LeftPanel extends JPanel implements ActionListener, NeedsUpdates{
     private JButton cupcakeButton;
     private JLabel cupcakes, cupcakesPerSecond;
 
@@ -23,8 +24,8 @@ public class LeftPanel extends JPanel implements ActionListener{
     public LeftPanel() {
 
         setLayout(new BorderLayout());
-        setSize(Dimensions.LEFT_PANEL_WIDTH, Dimensions.LEFT_PANEL_HEIGHT);
-        setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        setMaximumSize(new Dimension(Dimensions.LEFT_PANEL_WIDTH, Dimensions.LEFT_PANEL_HEIGHT));
+        setBackground(new Color(0, 0, 0, 0));
 
         //Cupcake button
         Image cupcake = new ImageIcon("CupcakeClicker\\Assets\\Cupcake.png").getImage();
@@ -42,12 +43,12 @@ public class LeftPanel extends JPanel implements ActionListener{
         //cupcakes and CPS display
         Font labelFont = new Font("Arial", Font.BOLD, 50);
 
-        cupcakes = new JLabel("Cupcakes: " + String.format("%.2f", Game.getCupcakes()), SwingConstants.CENTER);
+        cupcakes = new JLabel("Cupcakes: " + Game.getCupckakesString(), SwingConstants.CENTER);
         cupcakes.setFont(labelFont);
         cupcakes.setSize(100, 20);
         add(cupcakes, BorderLayout.NORTH);
 
-        cupcakesPerSecond = new JLabel("CPS: " + String.format("%.2f", Game.getCupcakesPerSecond()), SwingConstants.CENTER);
+        cupcakesPerSecond = new JLabel("CPS: " + Game.getCupckakesPerSecondString(), SwingConstants.CENTER);
         cupcakesPerSecond.setFont(labelFont);
         cupcakesPerSecond.setSize(100, 20);
         add(cupcakesPerSecond, BorderLayout.SOUTH);
@@ -55,9 +56,10 @@ public class LeftPanel extends JPanel implements ActionListener{
         setVisible(true);
     }
    
+    @Override
     public void update() {
-        cupcakes.setText("Cupcakes: " + String.format("%.2f", Game.getCupcakes()));
-        cupcakesPerSecond.setText("CPS: " + String.format("%.2f", Game.getCupcakesPerSecond()));
+        cupcakes.setText("Cupcakes: " + Game.getCupckakesString());
+        cupcakesPerSecond.setText("CPS: " + Game.getCupckakesPerSecondString());
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -65,4 +67,6 @@ public class LeftPanel extends JPanel implements ActionListener{
             Game.calculateIncomePerClick();
         }
     }
+
+    
 }

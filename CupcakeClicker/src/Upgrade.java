@@ -49,3 +49,4 @@ public class Upgrade {
       return iconPath;
    }
 }
+

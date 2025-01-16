@@ -25,7 +25,7 @@ public class Generator {
 
     public double getCost() {
         return costCalulation.applyAsDouble(level);
-     }
+    }
   
      public String getName() {
         return name;
@@ -35,7 +35,36 @@ public class Generator {
         return iconPath;
      }
 
-     //this should probably be changed, maybe game class variable should be static
+     public String getButtonDisplayCost() {
+        
+        
+        double costSum = 0;
+
+        //Max buy
+        if (Game.getLvlsPerClick() == -1){
+
+            int i = 0;
+            while(Game.getCupcakes() - costSum - costCalulation.applyAsDouble(level + i) > 0) {
+
+                //if more than 500 upgrades can be bought, quit the algorithm to not lag theprogram
+                if(i > 500) {
+                    System.out.println("Max");
+                    return "Max";
+                }
+
+                costSum += costCalulation.applyAsDouble(level + i);
+                i++;
+            }
+        }
+
+        else{
+            for (int i = 0; i < Game.getLvlsPerClick(); i++) {
+                costSum += costCalulation.applyAsDouble(level + i);
+            }
+        }
+        return String.valueOf(costSum);
+     }
+     
      public boolean isUnlocked() {
         if (!isUnlocked) {
             isUnlocked = Game.getCupcakes() >= unlockThreshold;
@@ -52,6 +81,21 @@ public class Generator {
     }
 
     public void levelUp(int levels) {
+
+        //Max buy
+        if (levels == -1) {
+            while (true) {
+                if (Game.getCupcakes() >= getCost()) {
+                    Game.subtractCupcakes(getCost());
+                    level++;
+                }
+                else{
+                    break;
+                }
+            }
+            return;
+        }
+    
         for (int i = 0; i < levels; i++) {
             if (Game.getCupcakes() >= getCost()) {
                 Game.subtractCupcakes(getCost());
