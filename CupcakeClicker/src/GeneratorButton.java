@@ -20,7 +20,7 @@ public class GeneratorButton extends JButton implements NeedsUpdates{
     
     public GeneratorButton(Generator gen) {
         this.gen = gen;
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, 64));
+        setMaximumSize(new Dimension(Dimensions.RIGHT_PANEL_WIDTH, 64));
         setLayout(new BorderLayout());
         setBackground(new Color(200, 170, 140));
         setBorder(BorderFactory.createLineBorder(new Color(210, 180, 150)));

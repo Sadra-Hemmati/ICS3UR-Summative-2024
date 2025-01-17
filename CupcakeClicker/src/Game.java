@@ -1,6 +1,5 @@
 package CupcakeClicker.src;
 
-import java.awt.desktop.SystemSleepEvent;
 import java.sql.Date;
 import java.text.DecimalFormat;
 
@@ -8,10 +7,21 @@ public class Game {
     private static int LvlsPerClickIndex;
     private static int[] LvlsPerClickOptions = {1, 10, 50, -1}; //-1 indicates Max lvls 
     private static Upgrade[] clickUpgrades = {new Upgrade("Double CPC", "CupcakeClicker\\Assets\\Cupcake.png", "", 1, (e) -> 2*e)};
-    private static Upgrade[][] generatorsUpgrades = {{}, {}};
+    private static Upgrade[][] generatorsUpgrades = {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}};
     private static Upgrade[] prestigeUpgrades = {};
-    private static Generator[] generators = {new Generator("Generator", "CupcakeClicker\\Assets\\Cursor.png", 0, 0, (e) -> 0.1, 1),
-                                            new Generator("Generator 2", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1, 1)
+    private static Generator[] generators = {new Generator("Generator", "CupcakeClicker\\Assets\\Cursor.png", 0, 0, (e) -> 0.1*e, 1),
+                                            new Generator("Generator 2", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
+                                            new Generator("Generator 3", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
+                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
+                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
+                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
+                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
+                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
+                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
+                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
+                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
+                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
+                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1)
                                                 };
     private static double cupcakes;
     private static double cupcakesPerSecond = 1;

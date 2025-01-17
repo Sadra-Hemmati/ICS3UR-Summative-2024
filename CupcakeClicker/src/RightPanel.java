@@ -12,12 +12,13 @@ public class RightPanel extends JPanel implements ActionListener{
     private GeneratorPane genPane;
     private JPanel titlePanel;
     private JLabel title;
-    private JButton toggleBuy;
-    private JButton multiBuyToggle;
+    private JButton toggleBuy, toggleSort;
 
     public RightPanel() {
         setLayout(new BorderLayout());
         setBackground(new Color(210, 180, 150));
+
+        genPane = new GeneratorPane();
 
         titlePanel = new JPanel(new BorderLayout());
 
@@ -26,13 +27,15 @@ public class RightPanel extends JPanel implements ActionListener{
         toggleBuy = new JButton(String.valueOf(Game.getLvlsPerClick()));
         toggleBuy.addActionListener(this);
 
+        toggleSort = new JButton(genPane.getSortModeString());
+        toggleSort.addActionListener(this);
+
         titlePanel.add(title, BorderLayout.WEST);
         titlePanel.add(toggleBuy, BorderLayout.EAST);
 
-        genPane = new GeneratorPane();
-
         add(titlePanel, BorderLayout.NORTH);
         add(genPane, BorderLayout.CENTER);
+        add(toggleSort, BorderLayout.SOUTH);
 
         setVisible(true);
     }
@@ -47,6 +50,11 @@ public class RightPanel extends JPanel implements ActionListener{
             else {
                 toggleBuy.setText(String.valueOf(Game.getLvlsPerClick()));
             }
+        }
+        if (e.getSource() == toggleSort) {
+            genPane.toggleSort();
+            genPane.resort();
+            toggleSort.setText(genPane.getSortModeString());
         }
     }
 

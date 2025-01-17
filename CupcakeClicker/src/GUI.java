@@ -66,7 +66,7 @@ public class GUI extends JFrame implements ActionListener{
                 Game.calculateIncomePerFrame(delta);
                 previousTimeMillis = currentTimeMillis;
 
-                System.out.println(delta);
+                //System.out.println(delta);
                 update();
             }
         });
@@ -76,6 +76,7 @@ public class GUI extends JFrame implements ActionListener{
     //calls the update method with the GUI frame as a root, uses invoke later to ensure getComponents() is ran on the EDT
     private void update(){
         SwingUtilities.invokeLater(() -> update(this));
+        repaint();
     }
 
     //recursively searchs the component tree, and updates when applicable

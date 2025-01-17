@@ -37,7 +37,6 @@ public class Generator {
 
      public String getButtonDisplayCost() {
         
-        
         double costSum = 0;
 
         //Max buy
@@ -46,7 +45,7 @@ public class Generator {
             int i = 0;
             while(Game.getCupcakes() - costSum - costCalulation.applyAsDouble(level + i) > 0) {
 
-                //if more than 500 upgrades can be bought, quit the algorithm to not lag theprogram
+                //if more than 500 upgrades can be bought, quit the algorithm to not lag the program
                 if(i > 500) {
                     System.out.println("Max");
                     return "Max";
@@ -74,6 +73,10 @@ public class Generator {
 
      public int getLevel() {
          return level;
+     }
+
+     public double getUnlockThreshold() {
+         return unlockThreshold;
      }
 
      public void prestigeReset(){
