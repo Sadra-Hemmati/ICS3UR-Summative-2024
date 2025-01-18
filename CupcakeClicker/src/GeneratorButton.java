@@ -32,16 +32,11 @@ public class GeneratorButton extends JButton implements NeedsUpdates{
         JPanel middle = new JPanel(new BorderLayout());
         middle.setBackground(new Color(0, 0,  0, 0));
 
-        name = new JLabel(gen.getName(), SwingConstants.CENTER);
+        name = new JLabel(gen.getName()+ ": " + gen.getProductionPerSecond(), SwingConstants.CENTER);
         name.setBounds(4, 2, 100, 20);
         middle.add(name, BorderLayout.NORTH);
 
-        cost = new JLabel(gen.getButtonDisplayCost(), SwingConstants.CENTER) {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(100,  getHeight());
-            }
-        };
+        cost = new JLabel(gen.getButtonDisplayCost(), SwingConstants.CENTER);
         cost.setBounds(4, 40, 100, 20);
         middle.add(cost, BorderLayout.SOUTH);
 
@@ -65,8 +60,10 @@ public class GeneratorButton extends JButton implements NeedsUpdates{
     @Override
     public void update() {
         setVisible(gen.isUnlocked());
+        name.setText(gen.getName()+ ": " + gen.getProductionPerSecond() +" CPS");
         level.setText(Game.formatWithSuffix((double)gen.getLevel()));
         cost.setText(gen.getButtonDisplayCost());
+        repaint();
     }
 
 }

@@ -24,7 +24,7 @@ public class RightPanel extends JPanel implements ActionListener{
 
         title = new JLabel("Generators");
         
-        toggleBuy = new JButton(String.valueOf(Game.getLvlsPerClick()));
+        toggleBuy = new JButton(String.valueOf(GeneratorPane.getLvlsPerClick()));
         toggleBuy.addActionListener(this);
 
         toggleSort = new JButton(genPane.getSortModeString());
@@ -43,12 +43,12 @@ public class RightPanel extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == toggleBuy) {
-            Game.toggleLvlsPerClick();
-            if (Game.getLvlsPerClick() == -1) {
+            GeneratorPane.toggleLvlsPerClick();
+            if (GeneratorPane.getLvlsPerClick() == -1) {
                 toggleBuy.setText("Max");
             }
             else {
-                toggleBuy.setText(String.valueOf(Game.getLvlsPerClick()));
+                toggleBuy.setText(String.valueOf(GeneratorPane.getLvlsPerClick()));
             }
         }
         if (e.getSource() == toggleSort) {

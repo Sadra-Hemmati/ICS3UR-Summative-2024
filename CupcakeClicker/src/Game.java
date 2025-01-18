@@ -2,27 +2,11 @@ package CupcakeClicker.src;
 
 import java.sql.Date;
 import java.text.DecimalFormat;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Hashtable;
 
-public class Game {
-    private static int LvlsPerClickIndex;
-    private static int[] LvlsPerClickOptions = {1, 10, 50, -1}; //-1 indicates Max lvls 
-    private static Upgrade[] clickUpgrades = {new Upgrade("Double CPC", "CupcakeClicker\\Assets\\Cupcake.png", "", 1, (e) -> 2*e)};
-    private static Upgrade[][] generatorsUpgrades = {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}};
-    private static Upgrade[] prestigeUpgrades = {};
-    private static Generator[] generators = {new Generator("Generator", "CupcakeClicker\\Assets\\Cursor.png", 0, 0, (e) -> 0.1*e, 1),
-                                            new Generator("Generator 2", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
-                                            new Generator("Generator 3", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
-                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
-                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
-                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
-                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
-                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
-                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
-                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
-                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
-                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1),
-                                            new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1)
-                                                };
+public class Game { 
     private static double cupcakes;
     private static double cupcakesPerSecond = 1;
     private static double cupcakesPerClick = 1;
@@ -31,10 +15,11 @@ public class Game {
     private static Date lastTimePlayed;
     private static boolean displayScientific;
 
-    public Game() {
+    public static void initialize() {
+        intializeGens();
+        initializeUpgrades();
         loadFromTXT();
         //calculateOfflineincome(); requires loadFromTxt() to work
-        LvlsPerClickIndex = 0;
     }
 
     public static void saveToTXT() {
@@ -43,6 +28,34 @@ public class Game {
 
     public static void loadFromTXT() {
         // TODO
+    }
+
+    private static void intializeGens() {
+        System.out.println();
+        new Generator("Generator", "CupcakeClicker\\Assets\\Cursor.png", 0, 0, (e) -> 0.1*e, 1);
+        new Generator("Generator 2", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1);
+        new Generator("Generator 3", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1);
+        new Generator("Generator 4", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1);
+        new Generator("Generator 5", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1);
+        new Generator("Generator 6", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1);
+        new Generator("Generator 7", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1);
+        new Generator("Generator 8", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1);
+        new Generator("Generator 9", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1);
+        new Generator("Generator 10", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1);
+        new Generator("Generator 11", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1);
+        new Generator("Generator 12", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1);
+        new Generator("Generator 13", "CupcakeClicker\\Assets\\Cursor.png", 0, 10, (e) -> 0.1*e, 1);
+        System.out.println("Gens initialized");
+    }
+
+    private static void initializeUpgrades() {
+        System.out.println();
+        new Upgrade("Upgrade 1", "CupcakeClicker\\Assets\\Cursor.png", "2x CPS", 2, e -> 2*e, UpgradeType.CPS);
+        new Upgrade("Upgrade 2", "CupcakeClicker\\Assets\\Cursor.png", "2x CPC", 5, e -> 2*e, UpgradeType.CLICK);
+        new GeneratorUpgrade("Upgrade 3", "CupcakeClicker\\Assets\\Cursor.png", "2x auto clicker CPS", 1 , e -> 2*e, 0);
+        new Upgrade("Upgrade 4", "CupcakeClicker\\Assets\\Cursor.png", "+0.1 CPC per Auto Clicker", 9, e -> e + Generator.getGenerators().get(GeneratorID.AUTO_CLICKER).getLevel()*0.1, UpgradeType.CLICK);
+        Upgrade.sortUpgrades();
+        System.out.println("Upgrades initialized");
     }
 
     public static void addCupcakes(double newCupcakes) {
@@ -57,12 +70,13 @@ public class Game {
 
     public static void calculateIncomePerClick() {
         double baseCupcakesPerClick = 0.1;
-        for (Upgrade upgrade : clickUpgrades) {
-            if (upgrade.isBought()) {
-                baseCupcakesPerClick = upgrade.applyUpgrade(baseCupcakesPerClick);
+        for (Upgrade upg : Upgrade.getUpgrades()) {
+            if (upg.getType() == UpgradeType.CLICK && upg.isBought()) {
+                baseCupcakesPerClick = upg.applyUpgrade(baseCupcakesPerClick);
             }
         }
         cupcakesPerClick = baseCupcakesPerClick*prestigeMultiplier;
+        System.out.println(cupcakesPerClick);
         addCupcakes(cupcakesPerClick);
     }
 
@@ -70,15 +84,16 @@ public class Game {
     //delta is the elapsed time in milliseconds since the last frame
     public static void calculateIncomePerFrame(long delta) {
         double tempCupcakesPerSecond = 0;
-        for (int i = 0; i < generators.length; i++) {
-            double generatorCupckaesPerSecond = generators[i].getProductionPerSecond();
-            for (Upgrade upgrade : generatorsUpgrades[i]) {
-                if (upgrade.isBought()) { 
-                    generatorCupckaesPerSecond = upgrade.applyUpgrade(generatorCupckaesPerSecond);
-                }
-            }
-            tempCupcakesPerSecond += generatorCupckaesPerSecond;
+        for (Generator gen : Generator.getGenerators()) {
+            tempCupcakesPerSecond += gen.getProductionPerSecond();            
         }
+
+        for (Upgrade upg : Upgrade.getUpgrades()) {
+            if(upg.getType() == UpgradeType.CPS && upg.isBought()){
+                tempCupcakesPerSecond = upg.applyUpgrade(tempCupcakesPerSecond);
+            }
+        }
+
         cupcakesPerSecond =  tempCupcakesPerSecond*prestigeMultiplier;
         addCupcakes(cupcakesPerSecond * delta / 1000);
     }
@@ -98,18 +113,6 @@ public class Game {
 
     public static double getCupcakesPerSecond() {
         return cupcakesPerSecond;
-    }
-
-    public static Generator[] getGenerators() {
-        return generators;
-    }
-
-    public static int getLvlsPerClick() {
-        return LvlsPerClickOptions[LvlsPerClickIndex];
-    }
-
-    public static void toggleLvlsPerClick() {
-        LvlsPerClickIndex = (LvlsPerClickIndex+1)%LvlsPerClickOptions.length;
     }
 
     public static String formatWithSuffix(double value) {

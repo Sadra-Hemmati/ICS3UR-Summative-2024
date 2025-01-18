@@ -65,6 +65,7 @@ public class LeftPanel extends JPanel implements ActionListener, NeedsUpdates{
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == cupcakeButton) {
             Game.calculateIncomePerClick();
+            
         }
     }
 
