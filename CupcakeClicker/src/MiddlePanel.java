@@ -1,15 +1,12 @@
 package CupcakeClicker.src;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
+import java.awt.Dimension;
 
 public class MiddlePanel extends JPanel{
-    JPanel upgradePanel, prestigePanel;
+    JPanel upgradePanel;
 
     public MiddlePanel() {
         setLayout(new BorderLayout());
@@ -17,17 +14,18 @@ public class MiddlePanel extends JPanel{
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setBackground(Color.BLACK);
 
-        upgradePanel = new JPanel(new BorderLayout());
+        upgradePanel = new JPanel(new BorderLayout()){
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(Dimensions.MIDDLE_PANEL_WIDTH, Dimensions.MIDDLE_PANEL_HEIGHT/2-40);
+            }
+        };
         upgradePanel.add(new JLabel("Upgrades", SwingConstants.LEFT), BorderLayout.NORTH);
-        upgradePanel.add(new UpgradePane(), BorderLayout.SOUTH);
+        upgradePanel.add(new UpgradePane(), BorderLayout.CENTER);
 
-
-        prestigePanel = new JPanel(new BorderLayout());
-        prestigePanel.add(new JLabel("Prestige", SwingConstants.LEFT), BorderLayout.NORTH);
-        //prestigePanel.add( BorderLayout.SOUTH);
 
         add(upgradePanel, BorderLayout.NORTH);
-        add(prestigePanel, BorderLayout.SOUTH);
+        add(new PrestigePanel(), BorderLayout.SOUTH);
 
         setVisible(true);
     }

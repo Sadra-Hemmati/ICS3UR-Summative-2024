@@ -4,10 +4,12 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 
 public class LeftPanel extends JPanel implements ActionListener, NeedsUpdates{
@@ -65,9 +67,6 @@ public class LeftPanel extends JPanel implements ActionListener, NeedsUpdates{
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == cupcakeButton) {
             Game.calculateIncomePerClick();
-            
         }
     }
-
-    
 }

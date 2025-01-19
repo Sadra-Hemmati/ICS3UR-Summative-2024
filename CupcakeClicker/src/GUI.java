@@ -1,18 +1,15 @@
 package CupcakeClicker.src;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.datatransfer.FlavorListener;
 
 public class GUI extends JFrame implements ActionListener{
     private LeftPanel leftPanel;
@@ -21,6 +18,7 @@ public class GUI extends JFrame implements ActionListener{
     private JButton cupcake;
     private long previousTimeMillis;
     private long currentTimeMillis;
+    private WindowListener windowListener;
 
     // @Override
     // public void paintComponents(Graphics g) {
@@ -31,10 +29,18 @@ public class GUI extends JFrame implements ActionListener{
 
     public GUI() {
 
-        //TODO Make Swing objects for each ui element in seperate classes and combine them here using a layout manager
+        windowListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e){
+                Game.saveToTXT();
+                System.exit(0);
+            }
+        };
+
+        addWindowListener(windowListener);
 
         // JFrame setup
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setTitle("Cupcake Clicker");
         setLayout(new BorderLayout());
         setSize(Dimensions.DEFAULT_WIDTH, Dimensions.DEFAULT_HEIGHT);

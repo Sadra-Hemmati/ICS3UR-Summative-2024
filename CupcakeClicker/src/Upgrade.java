@@ -20,6 +20,7 @@ public class Upgrade {
    private UpgradeType type;
    private static ArrayList<Upgrade> upgrades = new ArrayList<Upgrade>();
    private static ArrayList<GeneratorUpgrade> genUpgrades = new ArrayList<GeneratorUpgrade>();
+   
 
    //upgrade effect takes in the value affected by the upgrade, and return an upgraded value
    public Upgrade(String name, String iconPath, String description, double cost, DoubleUnaryOperator upgradeEffect, UpgradeType type){
@@ -85,6 +86,10 @@ public class Upgrade {
 
    public boolean isBought(){
       return isBought;
+   }
+
+   public void setBought(boolean isBought) {
+       this.isBought = isBought;
    }
 
    public double applyUpgrade(double operand){

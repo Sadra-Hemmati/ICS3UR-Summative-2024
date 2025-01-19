@@ -1,22 +1,16 @@
 package CupcakeClicker.src;
 
 import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.border.Border;
-
-import java.awt.event.ActionListener;
-import java.security.AlgorithmConstraints;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.FlowLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 
-public class UpgradeButton extends JButton{
+public class UpgradeButton extends JButton implements NeedsUpdates{
     private Upgrade upg;
     private JLabel icon, name, descripion, cost;
+    private final Image cupcakeSmall = new ImageIcon("CupcakeClicker\\Assets\\Cupcake.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
     
     public UpgradeButton(Upgrade upg) {
         this.upg = upg;
@@ -39,10 +33,19 @@ public class UpgradeButton extends JButton{
         descripion = new JLabel(upg.getDescription(), SwingConstants.CENTER);
         descripion.setSize(100, 20);
         middle.add(descripion);
+        
+        JPanel costPanel = new JPanel(new FlowLayout());
+        costPanel.setBounds(4, 40, 60, 20);
+        costPanel.setBackground(new Color(0, 0, 0, 0));
 
         cost = new JLabel(Game.formatWithSuffix(upg.getCost()), SwingConstants.CENTER);
+        cost.setSize(40, 20);
+        
+        costPanel.add(cost);
+        costPanel.add(new JLabel(new ImageIcon(cupcakeSmall), SwingConstants.LEFT));
+
         cost.setSize(100, 20);
-        add(cost, BorderLayout.EAST);
+        add(costPanel, BorderLayout.EAST);
 
         add(middle, BorderLayout.CENTER);
 
@@ -55,6 +58,10 @@ public class UpgradeButton extends JButton{
 
     public void buy() {
         upg.buy();
+    }
+
+    @Override
+    public void update() {
         setVisible(!upg.isBought());
     }
 }

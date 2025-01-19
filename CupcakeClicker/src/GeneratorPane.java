@@ -12,7 +12,7 @@ public class GeneratorPane extends JScrollPane implements ActionListener{
     private static int LvlsPerClickIndex;
     private static int[] LvlsPerClickOptions = {1, 10, 50, -1}; //-1 indicates Max lvls
 
-    private enum SortMode {
+    private static enum SortMode {
         DEFAULT("Normal", Comparator.comparingDouble(btn -> btn.getGen().getUnlockThreshold())),
         COST("Cost", Comparator.comparingDouble(btn -> btn.getGen().getCost())),
         //TODO test alpgabetical sort with more complex names

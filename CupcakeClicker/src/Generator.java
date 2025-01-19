@@ -5,6 +5,8 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.function.IntToDoubleFunction;
 
+import javax.swing.ImageIcon;
+
 public class Generator {
     private double unlockThreshold, productionPerLevelPerSecond;
     private String name, iconPath;
@@ -13,6 +15,7 @@ public class Generator {
     private boolean isUnlocked;
     private static ArrayList<Generator> generators = new ArrayList<Generator>();
     private int id;
+    
 
     Generator(String name, String iconPath, int level, double unlockThreshold, IntToDoubleFunction costCalulation, double productionPerLevelPerSecond){
         this.name = name;
@@ -36,10 +39,20 @@ public class Generator {
         return id;
     }
 
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setUnlocked(boolean isUnlocked) {
+        this.isUnlocked = isUnlocked;
+    }
+
     public double getProductionPerSecond() {
         double productionPerSecond = productionPerLevelPerSecond * level;
         for (GeneratorUpgrade upg : Upgrade.getGenUpgrades()) {
-            productionPerSecond = upg.applyUpgrade(productionPerSecond);
+            if (upg.getGenID() == id && upg.isBought()){
+                productionPerSecond = upg.applyUpgrade(productionPerSecond);
+            }
         }
         return productionPerSecond;
     }
@@ -98,10 +111,6 @@ public class Generator {
      public double getUnlockThreshold() {
          return unlockThreshold;
      }
-
-     public void prestigeReset(){
-        //TODO
-    }
 
     public void levelUp(int levels) {
 

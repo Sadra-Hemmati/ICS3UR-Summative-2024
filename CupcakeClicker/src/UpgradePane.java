@@ -2,7 +2,6 @@ package CupcakeClicker.src;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
-import java.util.Comparator;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 

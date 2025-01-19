@@ -1,22 +1,16 @@
 package CupcakeClicker.src;
 
 import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.border.Border;
-
-import java.awt.event.ActionListener;
-import java.security.AlgorithmConstraints;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.FlowLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 
 public class GeneratorButton extends JButton implements NeedsUpdates{
     private Generator gen;
     private JLabel icon, name, level, cost;
+    private final Image cupcakeSmall = new ImageIcon("CupcakeClicker\\Assets\\Cupcake.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
     
     public GeneratorButton(Generator gen) {
         this.gen = gen;
@@ -32,13 +26,21 @@ public class GeneratorButton extends JButton implements NeedsUpdates{
         JPanel middle = new JPanel(new BorderLayout());
         middle.setBackground(new Color(0, 0,  0, 0));
 
-        name = new JLabel(gen.getName()+ ": " + gen.getProductionPerSecond(), SwingConstants.CENTER);
+        name = new JLabel(gen.getName()+ ": " + Game.formatWithSuffix(gen.getProductionPerSecond()), SwingConstants.CENTER);
         name.setBounds(4, 2, 100, 20);
         middle.add(name, BorderLayout.NORTH);
 
+        JPanel costPanel = new JPanel(new FlowLayout());
+        costPanel.setBounds(4, 40, 60, 20);
+        costPanel.setBackground(new Color(0, 0, 0, 0));
+
         cost = new JLabel(gen.getButtonDisplayCost(), SwingConstants.CENTER);
-        cost.setBounds(4, 40, 100, 20);
-        middle.add(cost, BorderLayout.SOUTH);
+        cost.setSize(40, 20);
+        
+        costPanel.add(cost);
+        costPanel.add(new JLabel(new ImageIcon(cupcakeSmall), SwingConstants.LEFT));
+        
+        middle.add(costPanel, BorderLayout.SOUTH);
 
         add(middle, BorderLayout.CENTER);
         
@@ -60,7 +62,7 @@ public class GeneratorButton extends JButton implements NeedsUpdates{
     @Override
     public void update() {
         setVisible(gen.isUnlocked());
-        name.setText(gen.getName()+ ": " + gen.getProductionPerSecond() +" CPS");
+        name.setText(gen.getName()+ ": " + Game.formatWithSuffix(gen.getProductionPerSecond()) +" CPS");
         level.setText(Game.formatWithSuffix((double)gen.getLevel()));
         cost.setText(gen.getButtonDisplayCost());
         repaint();

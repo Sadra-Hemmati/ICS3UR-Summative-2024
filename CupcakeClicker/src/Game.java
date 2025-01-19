@@ -1,33 +1,63 @@
 package CupcakeClicker.src;
 
-import java.sql.Date;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DecimalFormat;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Hashtable;
 
 public class Game { 
     private static double cupcakes;
-    private static double cupcakesPerSecond = 1;
-    private static double cupcakesPerClick = 1;
+    private static double cupcakesPerSecond;
+    private static double cupcakesPerClick = 0.1;
     private static double prestigeCupkakes;
     private static double prestigeMultiplier = 1;
-    private static Date lastTimePlayed;
+    private static long lastTimePlayed;
     private static boolean displayScientific;
 
     public static void initialize() {
         intializeGens();
         initializeUpgrades();
         loadFromTXT();
-        //calculateOfflineincome(); requires loadFromTxt() to work
     }
 
     public static void saveToTXT() {
-        // TODO
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter("CupcakeClicker\\Save.txt"))) {
+            writer.println(cupcakes);
+            writer.println(prestigeCupkakes);
+            writer.println(prestigeMultiplier);
+            for(Generator gen : Generator.getGenerators()){
+                writer.println(gen.getLevel());
+            }
+            for(Upgrade upg : Upgrade.getUpgrades()) {
+                writer.println(upg.isBought());
+            }
+            writer.println(System.currentTimeMillis());
+
+        } catch (IOException e) {
+            System.err.println("Error loading: " + e.getMessage());
+        }
+        System.out.println("Game saved");
     }
 
     public static void loadFromTXT() {
-        // TODO
+        try (BufferedReader reader = new BufferedReader(new FileReader("CupcakeClicker\\Save.txt"))) {
+            cupcakes = Double.parseDouble(reader.readLine());
+            prestigeCupkakes = Double.parseDouble(reader.readLine());
+            prestigeMultiplier = Double.parseDouble(reader.readLine());
+            for(Generator gen : Generator.getGenerators()){
+                gen.setLevel(Integer.parseInt(reader.readLine()));
+            }
+            for(Upgrade upg : Upgrade.getUpgrades()) {
+                upg.setBought(Boolean.valueOf(reader.readLine()));
+            }
+            lastTimePlayed = Long.parseLong(reader.readLine());
+
+        } catch (IOException e) {
+            System.err.println("Error saving: " + e.getMessage());
+        }
     }
 
     private static void intializeGens() {
@@ -67,7 +97,6 @@ public class Game {
         cupcakes -= cupcakesSpent;
     }
 
-
     public static void calculateIncomePerClick() {
         double baseCupcakesPerClick = 0.1;
         for (Upgrade upg : Upgrade.getUpgrades()) {
@@ -81,8 +110,8 @@ public class Game {
     }
 
    
-    //delta is the elapsed time in milliseconds since the last frame
-    public static void calculateIncomePerFrame(long delta) {
+    //delta is the elapsed time in milliseconds since the last frame, returns the calculated cupcakes for the calculateOfflineIncome to work properly
+    public static double calculateIncomePerFrame(long delta) {
         double tempCupcakesPerSecond = 0;
         for (Generator gen : Generator.getGenerators()) {
             tempCupcakesPerSecond += gen.getProductionPerSecond();            
@@ -96,19 +125,44 @@ public class Game {
 
         cupcakesPerSecond =  tempCupcakesPerSecond*prestigeMultiplier;
         addCupcakes(cupcakesPerSecond * delta / 1000);
+        return cupcakesPerSecond * delta / 1000;
     }
 
-    public static void calculateOfflineincome() {
-        long offlineMilliSeconds = (System.currentTimeMillis() - lastTimePlayed.getTime());
-        calculateIncomePerFrame(offlineMilliSeconds);
+    public static double calculateOfflineincome() {
+        long offlineMilliSeconds = (System.currentTimeMillis() - lastTimePlayed);
+        return calculateIncomePerFrame(offlineMilliSeconds);
     }
 
-    public void prestige() {
-        //TODO  
+    public static double getPrestigeMultiplierGain() {
+        double prestigeMultiplierGain = Math.log(prestigeCupkakes - 1000000)/Math.log(100);
+        return prestigeMultiplierGain > 0.01? prestigeMultiplierGain:0;
+    }
+
+    public static void prestige() {
+
+        prestigeMultiplier += getPrestigeMultiplierGain();
+
+        prestigeCupkakes = 0;
+        cupcakes = 0;
+        for(Generator gen : Generator.getGenerators()){
+            gen.setLevel(0);
+            gen.setUnlocked(false);
+        }
+        for(Upgrade upg : Upgrade.getUpgrades()) {
+            upg.setBought(false);
+        }
     }
 
     public static double getCupcakes() {
         return cupcakes;
+    }
+
+    public static double getPrestigeCupkakes() {
+        return prestigeCupkakes;
+    }
+
+    public static double getPrestigeMultiplier() {
+        return prestigeMultiplier;
     }
 
     public static double getCupcakesPerSecond() {
@@ -154,5 +208,9 @@ public class Game {
         else {
             return formatWithSuffix(getCupcakesPerSecond());
         }
+    }
+
+    public static double getCupcakesPerClick() {
+        return cupcakesPerClick;
     }
 }
