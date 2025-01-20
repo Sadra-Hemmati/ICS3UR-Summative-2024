@@ -1,11 +1,9 @@
-package CupcakeClicker.src;
+package CupcakeClicker.src.Game;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.function.IntToDoubleFunction;
 
-import javax.swing.ImageIcon;
+import CupcakeClicker.src.GUI.GeneratorPane;
 
 public class Generator {
     private double unlockThreshold, productionPerLevelPerSecond;
@@ -15,9 +13,9 @@ public class Generator {
     private boolean isUnlocked;
     private static ArrayList<Generator> generators = new ArrayList<Generator>();
     private int id;
-    
 
-    Generator(String name, String iconPath, int level, double unlockThreshold, IntToDoubleFunction costCalulation, double productionPerLevelPerSecond){
+    Generator(String name, String iconPath, int level, double unlockThreshold, IntToDoubleFunction costCalulation,
+            double productionPerLevelPerSecond) {
         this.name = name;
         this.iconPath = iconPath;
         this.level = level;
@@ -31,6 +29,10 @@ public class Generator {
         System.out.println("Gen Added: " + name);
     }
 
+    
+    /** 
+     * @return ArrayList<Generator>
+     */
     public static ArrayList<Generator> getGenerators() {
         return generators;
     }
@@ -50,7 +52,7 @@ public class Generator {
     public double getProductionPerSecond() {
         double productionPerSecond = productionPerLevelPerSecond * level;
         for (GeneratorUpgrade upg : Upgrade.getGenUpgrades()) {
-            if (upg.getGenID() == id && upg.isBought()){
+            if (upg.getGenID() == id && upg.isBought()) {
                 productionPerSecond = upg.applyUpgrade(productionPerSecond);
             }
         }
@@ -60,27 +62,28 @@ public class Generator {
     public double getCost() {
         return costCalulation.applyAsDouble(level);
     }
-  
-     public String getName() {
-        return name;
-     }
-  
-     public String getIconPath() {
-        return iconPath;
-     }
 
-     public String getButtonDisplayCost() {
-        
+    public String getName() {
+        return name;
+    }
+
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    public String getButtonDisplayCost() {
+
         double costSum = 0;
 
-        //Max buy
-        if (GeneratorPane.getLvlsPerClick() == -1){
+        // Max buy
+        if (GeneratorPane.getLvlsPerClick() == -1) {
 
             int i = 0;
-            while(Game.getCupcakes() - costSum - costCalulation.applyAsDouble(level + i) > 0) {
+            while (Game.getCupcakes() - costSum - costCalulation.applyAsDouble(level + i) > 0) {
 
-                //if more than 500 upgrades can be bought, quit the algorithm to not lag the program
-                if(i > 500) {
+                // if more than 500 upgrades can be bought, quit the algorithm to not lag the
+                // program
+                if (i > 500) {
                     return "Max";
                 }
 
@@ -89,45 +92,44 @@ public class Generator {
             }
         }
 
-        else{
+        else {
             for (int i = 0; i < GeneratorPane.getLvlsPerClick(); i++) {
                 costSum += costCalulation.applyAsDouble(level + i);
             }
         }
         return Game.formatWithSuffix(costSum);
-     }
-     
-     public boolean isUnlocked() {
+    }
+
+    public boolean isUnlocked() {
         if (!isUnlocked) {
             isUnlocked = Game.getCupcakes() >= unlockThreshold;
         }
         return isUnlocked;
-     }
+    }
 
-     public int getLevel() {
-         return level;
-     }
+    public int getLevel() {
+        return level;
+    }
 
-     public double getUnlockThreshold() {
-         return unlockThreshold;
-     }
+    public double getUnlockThreshold() {
+        return unlockThreshold;
+    }
 
     public void levelUp(int levels) {
 
-        //Max buy
+        // Max buy
         if (levels == -1) {
             while (true) {
                 if (Game.getCupcakes() >= getCost()) {
                     Game.subtractCupcakes(getCost());
                     level++;
-                }
-                else{
+                } else {
                     break;
                 }
             }
             return;
         }
-    
+
         for (int i = 0; i < levels; i++) {
             if (Game.getCupcakes() >= getCost()) {
                 Game.subtractCupcakes(getCost());

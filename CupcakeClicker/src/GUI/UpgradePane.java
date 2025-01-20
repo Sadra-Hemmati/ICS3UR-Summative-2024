@@ -1,14 +1,23 @@
-package CupcakeClicker.src;
+package CupcakeClicker.src.GUI;
 
 import javax.swing.*;
+
+import CupcakeClicker.src.Game.Upgrade;
+
 import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 
-public class UpgradePane extends JScrollPane implements ActionListener{
+/**
+ * The UpgradePane class represents a scrollable pane containing upgrade buttons.
+ */
+public class UpgradePane extends JScrollPane implements ActionListener {
     private JPanel upgrades;
     private UpgradeButton[] upgBTNs;
-    
+
+    /**
+     * Constructs a new UpgradePane and initializes its components.
+     */
     public UpgradePane() {
 
         setBackground(new Color(0, 0, 0, 0));
@@ -19,7 +28,7 @@ public class UpgradePane extends JScrollPane implements ActionListener{
         upgrades.setSize(500, Integer.MAX_VALUE);
 
         upgBTNs = new UpgradeButton[Upgrade.getUpgrades().size()];
-        for(int i = 0; i < Upgrade.getUpgrades().size(); i++) {
+        for (int i = 0; i < Upgrade.getUpgrades().size(); i++) {
             upgBTNs[i] = new UpgradeButton(Upgrade.getUpgrades().get(i));
             upgBTNs[i].addActionListener(this);
             upgrades.add(upgBTNs[i], JButton.CENTER);
@@ -33,9 +42,14 @@ public class UpgradePane extends JScrollPane implements ActionListener{
         setViewportView(upgrades);
         setVisible(true);
     }
-    
+
+    /**
+     * Buys upgrades when the corresponding buttons are clicked
+     * 
+     * @param e The action event.
+     */
     @Override
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof UpgradeButton) {
             UpgradeButton upg = (UpgradeButton) e.getSource();
             upg.buy();
